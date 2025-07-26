@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Sisma Plot App</title>
+    <style>
+        body {
+            background-color: #111;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+        }
+
+        form {
+            display: inline-block;
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #444;
+            background-color: #222;
+            border-radius: 10px;
+        }
+
+        fieldset {
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            font-weight: bold;
+            color: #00aced;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            width: 400px;
+        }
+
+        .form-group input {
+            width: 100px;
+            text-align: right;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #00aced;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0084a6;
+        }
+
+        .download-button {
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Sisma Simulator</h1>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <fieldset>
+            <legend>INFORMAZIONI MODELLO</legend>
+            <div class="form-group">
+                <label for="massa">Massa del modello [kg]</label>
+                <input type="number" step="any" name="massa" value="{{ params['massa'] }}" required>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>INFORMAZIONI TEMPORALI</legend>
+            <div class="form-group">
+                <label for="t_max">Durata massima del sisma [s]</label>
+                <input type="number" step="any" name="t_max" value="{{ params['t_max'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="dt">Distanza tra step temporali [s]</label>
+                <input type="number" step="any" name="dt" value="{{ params['dt'] }}" required>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>INFORMAZIONI ACCELERAZIONE</legend>
+            <div class="form-group">
+                <label for="a1">Ampiezza campana di picco</label>
+                <input type="number" step="any" name="a1" value="{{ params['a1'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="b1">Centraggio campana</label>
+                <input type="number" step="any" name="b1" value="{{ params['b1'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="c1">Squadratura campana</label>
+                <input type="number" step="any" name="c1" value="{{ params['c1'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="m1">Accelerazione massima [g]</label>
+                <input type="number" step="any" name="m1" value="{{ params['m1'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="n1">Accelerazione minima [g]</label>
+                <input type="number" step="any" name="n1" value="{{ params['n1'] }}" required>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>INFORMAZIONI PERIODI</legend>
+            <div class="form-group">
+                <label for="a2">Ampiezza campana di picco</label>
+                <input type="number" step="any" name="a2" value="{{ params['a2'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="b2">Centraggio campana</label>
+                <input type="number" step="any" name="b2" value="{{ params['b2'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="c2">Squadratura campana</label>
+                <input type="number" step="any" name="c2" value="{{ params['c2'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="m2">Periodo massimo [s]</label>
+                <input type="number" step="any" name="m2" value="{{ params['m2'] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="n2">Periodo minimo [s]</label>
+                <input type="number" step="any" name="n2" value="{{ params['n2'] }}" required>
+            </div>
+        </fieldset>
+
+        <div style="text-align:center;">
+            <button type="submit">Genera Grafici</button>
+        </div>
+    </form>
+
+    {% if graphs %}
+        <div class="download-button">
+            <a href="/download">
+                <button>📄 Scarica Dati Calcolati (.txt)</button>
+            </a>
+        </div>
+    {% endif %}
+
+    {% for graph in graphs %}
+        <div style="margin: 30px auto; width: 90%;">
+            {{ graph | safe }}
+        </div>
+    {% endfor %}
+</body>
+</html>
