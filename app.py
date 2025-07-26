@@ -120,6 +120,8 @@ def download():
 
     return send_file(io.BytesIO(buf.getvalue().encode()), mimetype='text/plain', as_attachment=True, download_name='output_dati.txt')
 
+import os
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
